@@ -14,72 +14,123 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="{x:Type ListBox}">
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <UniformGrid>
+                            <TextBlock Text="{Binding Title}" />
+                            <TextBlock Text="{Binding Priority}" />
+                        </UniformGrid>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <DockPanel LastChildFill="True">
 
-        <HeaderedContentControl DockPanel.Dock="Left" Margin="10" MinWidth="300">
+        <HeaderedContentControl DockPanel.Dock="Left" Margin="10" MinWidth="400">
             <HeaderedContentControl.Header>
+
                 <StackPanel Orientation="Vertical" Margin="10">
-                    <TextBlock Text="ToDo Lists"/>
-                    <TextBox x:Name="newListCategory"/>
-                    <Button Content="Add List" Command="{Binding NewListCommand}" 
-                            CommandParameter="{Binding ElementName=newListCategory, Path=Text}" 
+                    <TextBlock Text="Features"/>
+                    <GroupBox Header="Feature">
+                        <StackPanel Margin="10">
+                            <StackPanel Margin="10">
+                                <TextBlock>Title</TextBlock>
+                                <TextBox Text="{Binding Title}" />
+                            </StackPanel>
+                            
+                            <StackPanel Orientation="Vertical" Margin="10">
+                                <TextBlock>Enter the feature details in the form:</TextBlock>
+                                <TextBlock>In order to ....</TextBlock>
+                                <TextBlock>As ...</TextBlock>
+                                <TextBlock>I want to ...</TextBlock>
+                            </StackPanel>
+                            <StackPanel Margin="10">
+                                <TextBlock>Detail</TextBlock>
+                                <TextBox Text="{Binding Detail}" AcceptsReturn="True" AcceptsTab="True" Height="100" />
+                            </StackPanel>
+
+
+                            <Button Content="Add feature" Command="{Binding NewListCommand}" 
+                            CommandParameter="{Binding ElementName=newFeature, Path=Text}" 
                             Padding="2" Margin="5" Width="100" HorizontalAlignment="Right"/>
+                        </StackPanel>
+                    </GroupBox>
                 </StackPanel>
+
             </HeaderedContentControl.Header>
-            
-            <DataGrid ItemsSource="{Binding TodoLists}"
+
+            <GroupBox Header="Features" Margin="10" Padding="5">
+                <ListBox ItemsSource="{Binding Features}"
                       IsSynchronizedWithCurrentItem="True" 
-                      SelectedItem="{Binding SelectedList}"
-                      AutoGenerateColumns="False"
-                      GridLinesVisibility="None">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Width="auto" Binding="{Binding Title}" Header="Title" />
-                </DataGrid.Columns>
-            </DataGrid>
+                      SelectedItem="{Binding SelectedList}">
+                </ListBox>
+            </GroupBox>
+
+
         </HeaderedContentControl>
 
-        <HeaderedContentControl Margin="10" MinWidth="300">
+        <HeaderedContentControl Margin="10" MinWidth="400">
             <HeaderedContentControl.Header>
                 <StackPanel Orientation="Vertical" Margin="10">
-                    <TextBlock Text="ToDo Items"/>
+                    <TextBlock Text="Scenarios"/>
+                    <TextBlock Text="{Binding SelectedFeature.Title}"/>
                     <TextBox x:Name="newTodoTitle"/>
-                    <Button Content="Add item" Command="{Binding AddItemCommand}"  
+                    <Button Content="Add scenario" Command="{Binding AddItemCommand}"  
                             CommandParameter="{Binding ElementName=newTodoTitle, Path=Text}"
-                            Padding="2" Margin="5" Width="100" HorizontalAlignment="Right"/>
+                            Padding="2" Margin="5" Width="120" HorizontalAlignment="Right"/>
                 </StackPanel>
             </HeaderedContentControl.Header>
 
-            <DataGrid ItemsSource="{Binding SelectedListsItems}" 
+            <StackPanel>
+                <GroupBox Header="Current" Margin="10" Padding="5">
+                    <DataGrid ItemsSource="{Binding SelectedListsItems}" 
                       AutoGenerateColumns="False"
                       GridLinesVisibility="None"
                       RowStyle="{StaticResource TodoItemRowStyle}">
-                
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="In Progress">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="In Progress" 
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="auto" Binding="{Binding Title}" Header="Title" />
+                            <DataGridTextColumn Width="auto" Binding="{Binding CreatedAt}" Header="Created At" />
+                            <DataGridTemplateColumn Header="In Progress">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="In Progress" 
                                         Command="{Binding DataContext.SetItemInProgressCommand, 
                                     RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
                                         CommandParameter="{Binding}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn Width="auto" Binding="{Binding Title}" Header="Title" />
-                    <DataGridTextColumn Width="auto" Binding="{Binding CreatedAt}" Header="Created At" />
-                    <DataGridTemplateColumn Header="In Progress">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="Completed" 
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="In Progress">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Completed" 
                                         Command="{Binding DataContext.SetItemCompletedCommand, 
                                     RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
                                         CommandParameter="{Binding}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns> 
-            </DataGrid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+
+                <GroupBox Header="Completed" Margin="10" Padding="5">
+                    <DataGrid ItemsSource="{Binding SelectedListsCompletedItems}" 
+                      AutoGenerateColumns="False"
+                      GridLinesVisibility="None"
+                      RowStyle="{StaticResource TodoItemRowStyle}">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="auto" Binding="{Binding Title}" Header="Title" />
+                            <DataGridTextColumn Width="auto" Binding="{Binding CreatedAt}" Header="Created At" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </StackPanel>
+
         </HeaderedContentControl>
     </DockPanel>
 </Window>

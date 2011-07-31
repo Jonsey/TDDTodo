@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.Practices.Prism.Commands;
@@ -7,7 +8,7 @@ using TDDToDo.Models;
 
 namespace TDDToDo.ViewModels
 {
-    public class TodoListViewModel : NotificationObject
+    public class FeaturesViewModel : NotificationObject
     {
         const string SelectedListsItemsPropertyName = "SelectedListsItems";
 
@@ -15,14 +16,14 @@ namespace TDDToDo.ViewModels
 
         readonly string dataFolder = System.Configuration.ConfigurationSettings.AppSettings["DataFolder"];
         readonly string pathToDataFile = System.Configuration.ConfigurationSettings.AppSettings["PathToDataFile"];
-        TodoList selectedList;
+        Feature selectedList;
 
         #region Commands
 
-        DelegateCommand<string> newListCommand;
+        DelegateCommand newListCommand;
         DelegateCommand<string> addItemCommand;
-        DelegateCommand<TodoItem> setItemInProgressCommand;
-        DelegateCommand<TodoItem> setItemCompletedCommand;
+        DelegateCommand<Specification> setItemInProgressCommand;
+        DelegateCommand<Specification> setItemCompletedCommand;
         DelegateCommand saveCommand;
         
         #endregion 
@@ -31,9 +32,9 @@ namespace TDDToDo.ViewModels
 
         #region Constructors
 
-        public TodoListViewModel()
+        public FeaturesViewModel()
         {
-            TodoLists = new ObservableCollection<TodoList>();
+            Features = new ObservableCollection<Feature>();
             LoadData();
         }
 
@@ -41,17 +42,21 @@ namespace TDDToDo.ViewModels
 
         #region Properties
 
-        public ObservableCollection<TodoList> TodoLists { get; set; }
+        public ObservableCollection<Feature> Features { get; set; }
 
-        public ObservableCollection<TodoItem> SelectedListsItems
+        public string Title { get; set; }
+
+        public string Detail { get; set; }
+
+        public ObservableCollection<Specification> SelectedListsItems
         {
             get
             {
-                return selectedList != null ? new ObservableCollection<TodoItem>(selectedList.Items) : null;
+                return selectedList != null ? new ObservableCollection<Specification>(selectedList.Specifications) : null;
             }
         }
 
-        public TodoList SelectedList
+        public Feature SelectedList
         {
             get { return selectedList; }
             set
@@ -65,9 +70,9 @@ namespace TDDToDo.ViewModels
 
         #region Commands
 
-        public DelegateCommand<string> NewListCommand
+        public DelegateCommand NewListCommand
         {
-            get { return newListCommand ?? (newListCommand = new DelegateCommand<string>(CreateNewList)); }
+            get { return newListCommand ?? (newListCommand = new DelegateCommand(CreateNewList)); }
         }
 
         public DelegateCommand<string> AddItemCommand
@@ -75,14 +80,14 @@ namespace TDDToDo.ViewModels
             get { return addItemCommand ?? (addItemCommand = new DelegateCommand<string>(AddItem, CanAddItem)); }
         }
 
-        public DelegateCommand<TodoItem> SetItemInProgressCommand
+        public DelegateCommand<Specification> SetItemInProgressCommand
         {
-            get { return setItemInProgressCommand ?? (setItemInProgressCommand = new DelegateCommand<TodoItem>(SetItemInProgress)); }
+            get { return setItemInProgressCommand ?? (setItemInProgressCommand = new DelegateCommand<Specification>(SetItemInProgress)); }
         }
 
-        public DelegateCommand<TodoItem> SetItemCompletedCommand
+        public DelegateCommand<Specification> SetItemCompletedCommand
         {
-            get { return setItemCompletedCommand ?? (setItemCompletedCommand = new DelegateCommand<TodoItem>(SetItemCompleted)); }
+            get { return setItemCompletedCommand ?? (setItemCompletedCommand = new DelegateCommand<Specification>(SetItemCompleted)); }
         }
 
         public DelegateCommand SaveCommand
@@ -103,13 +108,13 @@ namespace TDDToDo.ViewModels
             using (var fs = new FileStream(pathToDataFile, FileMode.Open))
             {
                 var formater = new BinaryFormatter();
-                TodoLists = formater.Deserialize(fs) as ObservableCollection<TodoList>;
+                Features = formater.Deserialize(fs) as ObservableCollection<Feature>;
             }
         }
 
-        void CreateNewList(string category)
+        void CreateNewList()
         {
-            TodoLists.Add(new TodoList(category));
+            Features.Add(new Feature(Title, Detail));
             Save();
         }
 
@@ -120,20 +125,20 @@ namespace TDDToDo.ViewModels
 
         void AddItem(string title)
         {
-            var item = new TodoItem(title);
+            var item = new Specification(title);
             SelectedList.AddItem(item);
 
             RefreshTodoItems();
             Save();
         }
 
-        void SetItemInProgress(TodoItem item)
+        void SetItemInProgress(Specification item)
         {
             item.SetInProgress();
             RefreshTodoItems();
         }
 
-        void SetItemCompleted(TodoItem item)
+        void SetItemCompleted(Specification item)
         {
             item.SetCompleted();
             RefreshTodoItems();
@@ -146,7 +151,7 @@ namespace TDDToDo.ViewModels
             using (Stream fs = new FileStream(pathToDataFile, FileMode.Create))
             {
                 var formater = new BinaryFormatter();
-                formater.Serialize(fs, TodoLists);
+                formater.Serialize(fs, Features);
             }
         }
 

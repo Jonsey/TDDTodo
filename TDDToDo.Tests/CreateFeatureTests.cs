@@ -8,7 +8,7 @@ using TDDToDo.Models;
 namespace TDDToDo.Tests
 {
     
-    // TodoList API is not intuitive
+    // Feature API is not intuitive
     // Completed item set to inprogress should not be completed
     // Completed item should not be in progress
     // Flag item as completed
@@ -18,29 +18,30 @@ namespace TDDToDo.Tests
     // List of items 
 
     [TestFixture]
-    public class CreateTodoListTests
+    public class CreateFeatureTests
     {
-        const string ListTitle = "Make excellent bit of software";
+        const string Title = "Make excellent bit of software";
+        const string Detail = "In order the do something As a user I want to be able to do something";
 
-        TodoList list;
-        TodoItem todoItem;
+        Feature feature;
+        Specification specification;
 
         void InitialiseTodoList()
         {
-            list = new TodoList(ListTitle);
+            feature = new Feature(Title, Detail);
         }
 
         void AddTodoItem()
         {
-            todoItem = new TodoItem("Title");
-            list.AddItem(todoItem);
+            specification = new Specification("Title");
+            feature.AddItem(specification);
         }
 
         [Test]
         public void ShouldBeAbleToCreateANewTodoList()
         {
             InitialiseTodoList();
-            Assert.IsNotNull(list);
+            Assert.IsNotNull(feature);
         }
 
         [Test]
@@ -49,7 +50,7 @@ namespace TDDToDo.Tests
             InitialiseTodoList();
             AddTodoItem();
 
-            Assert.AreEqual(todoItem, list.Items[0]);
+            Assert.AreEqual(specification, feature.Specifications[0]);
         }
 
         [Test]
@@ -57,7 +58,15 @@ namespace TDDToDo.Tests
         {
             InitialiseTodoList();
 
-            Assert.AreEqual(ListTitle, list.Title);
+            Assert.AreEqual(Title, feature.Title);
+        }
+
+        [Test]
+        public void ListShouldHaveDetail()
+        {
+            InitialiseTodoList();
+
+            Assert.AreEqual(Detail, feature.Detail);
         }
 
         [Test]
@@ -66,9 +75,9 @@ namespace TDDToDo.Tests
             InitialiseTodoList();
             AddTodoItem();
 
-            list.Items[0].SetInProgress();
+            feature.Specifications[0].SetInProgress();
 
-            Assert.IsTrue(list.Items[0].InProgress);
+            Assert.IsTrue(feature.Specifications[0].InProgress);
         }
 
         [Test]
@@ -77,9 +86,9 @@ namespace TDDToDo.Tests
             InitialiseTodoList();
             AddTodoItem();
 
-            list.Items[0].SetCompleted();
+            feature.Specifications[0].SetCompleted();
 
-            Assert.IsTrue(list.Items[0].Completed);
+            Assert.IsTrue(feature.Specifications[0].Completed);
         }
 
         [Test]
@@ -88,10 +97,10 @@ namespace TDDToDo.Tests
             InitialiseTodoList();
             AddTodoItem();
 
-            list.Items[0].SetInProgress();
-            list.Items[0].SetCompleted();
+            feature.Specifications[0].SetInProgress();
+            feature.Specifications[0].SetCompleted();
 
-            Assert.IsFalse(list.Items[0].InProgress);
+            Assert.IsFalse(feature.Specifications[0].InProgress);
         }
 
         [Test]
@@ -100,10 +109,10 @@ namespace TDDToDo.Tests
             InitialiseTodoList();
             AddTodoItem();
 
-            list.Items[0].SetCompleted();
-            list.Items[0].SetInProgress();
+            feature.Specifications[0].SetCompleted();
+            feature.Specifications[0].SetInProgress();
 
-            Assert.IsFalse(list.Items[0].Completed);
+            Assert.IsFalse(feature.Specifications[0].Completed);
         }
     }
 }

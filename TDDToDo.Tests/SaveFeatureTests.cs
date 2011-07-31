@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace TDDToDo.Tests
 {
     [TestFixture]
-    public class SaveTodoListTests
+    public class SaveFeatureTests
     {
         
     }

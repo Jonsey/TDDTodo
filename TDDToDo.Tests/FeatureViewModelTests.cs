@@ -13,6 +13,7 @@ using TDDToDo.ViewModels;
 namespace TDDToDo.Tests
 {
     // TODO Set status on data load
+    // TODO Add detail to feature
     // Set Item complete
     // Set Item in progress
     // TODO Add categories such as Idea, Must, Should, Candy
@@ -36,7 +37,7 @@ namespace TDDToDo.Tests
     // Add new list
 
     [TestFixture]
-    public class ViewModelTests
+    public class FeatureViewModelTests
     {
 
         const string ItemTitle = "Get this test to pass";
@@ -65,18 +66,21 @@ namespace TDDToDo.Tests
         [Test]
         public void CanCreateMultipleLists()
         {
-            var viewModel = new TodoListViewModel();
-            viewModel.NewListCommand.Execute("List 1");
-            viewModel.NewListCommand.Execute("List 2"); 
+            var viewModel = new FeaturesViewModel();
+            viewModel.Title = "List 1";
+            viewModel.NewListCommand.Execute();
+            viewModel.Title = "List 2";
+            viewModel.NewListCommand.Execute(); 
 
-            Assert.AreEqual(2, viewModel.TodoLists.Count);
+            Assert.AreEqual(2, viewModel.Features.Count);
         }
 
         [Test]
         public void ShouldNotBeAbleToAddItemsIfNoListSelected()
         {
-            var viewModel = new TodoListViewModel();
-            viewModel.NewListCommand.Execute("List 1");
+            var viewModel = new FeaturesViewModel();
+            viewModel.Title = "List 1";
+            viewModel.NewListCommand.Execute();
 
             Assert.IsFalse(viewModel.AddItemCommand.CanExecute(ItemTitle));
         }
@@ -99,27 +103,31 @@ namespace TDDToDo.Tests
         [Test]
         public void ShouldAddNewItemsToTheSelectedList()
         {
-            var viewModel = new TodoListViewModel();
-            viewModel.NewListCommand.Execute("List 1");
-            viewModel.NewListCommand.Execute("List 2");
+            var viewModel = new FeaturesViewModel();
+            viewModel.Title = "List 1";
+            viewModel.NewListCommand.Execute();
+            viewModel.Title = "List 2";
+            viewModel.NewListCommand.Execute(); 
 
-            viewModel.SelectedList = viewModel.TodoLists[1];
+            viewModel.SelectedList = viewModel.Features[1];
 
             Assert.IsTrue(viewModel.AddItemCommand.CanExecute(ItemTitle), "Cannot add item");
 
             viewModel.AddItemCommand.Execute(ItemTitle);
 
-            Assert.AreEqual(ItemTitle, viewModel.TodoLists[1].Items[0].Title);
+            Assert.AreEqual(ItemTitle, viewModel.Features[1].Specifications[0].Title);
         }
 
         [Test]
         public void ShouldExposeSelectedListsItems()
         {
-            var viewModel = new TodoListViewModel();
-            viewModel.NewListCommand.Execute("List 1");
-            viewModel.NewListCommand.Execute("List 2");
+            var viewModel = new FeaturesViewModel();
+            viewModel.Title = "List 1";
+            viewModel.NewListCommand.Execute();
+            viewModel.Title = "List 2";
+            viewModel.NewListCommand.Execute(); 
 
-            viewModel.SelectedList = viewModel.TodoLists[1];
+            viewModel.SelectedList = viewModel.Features[1];
             viewModel.AddItemCommand.Execute(ItemTitle);
 
             Assert.AreEqual(ItemTitle, viewModel.SelectedListsItems[0].Title);
@@ -128,25 +136,27 @@ namespace TDDToDo.Tests
         [Test]
         public void ItemsListShouldRelateToSelectedList()
         {
-            var viewModel = new TodoListViewModel();
-            viewModel.NewListCommand.Execute("List 1");
-            viewModel.NewListCommand.Execute("List 2");
+            var viewModel = new FeaturesViewModel();
+            viewModel.Title = "List 1";
+            viewModel.NewListCommand.Execute();
+            viewModel.Title = "List 2";
+            viewModel.NewListCommand.Execute(); 
 
-            viewModel.SelectedList = viewModel.TodoLists[1];
+            viewModel.SelectedList = viewModel.Features[1];
             viewModel.AddItemCommand.Execute("Item 1");
 
-            viewModel.SelectedList = viewModel.TodoLists[0];
+            viewModel.SelectedList = viewModel.Features[0];
             viewModel.AddItemCommand.Execute("Item 0");
 
-            viewModel.SelectedList = viewModel.TodoLists[1];
+            viewModel.SelectedList = viewModel.Features[1];
 
-            Assert.AreEqual("Item 1", viewModel.SelectedList.Items[0].Title);
+            Assert.AreEqual("Item 1", viewModel.SelectedList.Specifications[0].Title);
         }
 
         [Test] 
         public void ShouldNotFailWhenNoListHasBeenSelected()
         {
-            var viewModel = new TodoListViewModel();
+            var viewModel = new FeaturesViewModel();
 
             Assert.IsNull(viewModel.SelectedListsItems);
         }
@@ -184,9 +194,9 @@ namespace TDDToDo.Tests
             viewModel.AddItemCommand.Execute(ItemTitle);
 
             changedProperty = string.Empty;
-            viewModel.SetItemInProgressCommand.Execute(viewModel.TodoLists[0].Items[0]);
+            viewModel.SetItemInProgressCommand.Execute(viewModel.Features[0].Specifications[0]);
 
-            Assert.IsTrue(viewModel.TodoLists[0].Items[0].InProgress);
+            Assert.IsTrue(viewModel.Features[0].Specifications[0].InProgress);
             AssertTodoItemsRefreshed();
         }
 
@@ -198,9 +208,9 @@ namespace TDDToDo.Tests
 
             changedProperty = string.Empty;
             
-            viewModel.SetItemCompletedCommand.Execute(viewModel.TodoLists[0].Items[0]);
+            viewModel.SetItemCompletedCommand.Execute(viewModel.Features[0].Specifications[0]);
 
-            Assert.IsTrue(viewModel.TodoLists[0].Items[0].Completed);
+            Assert.IsTrue(viewModel.Features[0].Specifications[0].Completed);
             AssertTodoItemsRefreshed();
         }
         
@@ -211,10 +221,10 @@ namespace TDDToDo.Tests
             viewModel.AddItemCommand.Execute(ItemTitle);
 
             changedProperty = string.Empty;
-            viewModel.SetItemInProgressCommand.Execute(viewModel.TodoLists[0].Items[0]);
-            viewModel.SetItemCompletedCommand.Execute(viewModel.TodoLists[0].Items[0]);
+            viewModel.SetItemInProgressCommand.Execute(viewModel.Features[0].Specifications[0]);
+            viewModel.SetItemCompletedCommand.Execute(viewModel.Features[0].Specifications[0]);
 
-            Assert.IsFalse(viewModel.TodoLists[0].Items[0].InProgress);
+            Assert.IsFalse(viewModel.Features[0].Specifications[0].InProgress);
             AssertTodoItemsRefreshed(); 
         }
 
@@ -248,7 +258,7 @@ namespace TDDToDo.Tests
                 result = formater.Deserialize(fs);
             }
 
-            Assert.IsInstanceOf(typeof(ObservableCollection<TodoList>),  result);
+            Assert.IsInstanceOf(typeof(ObservableCollection<Feature>),  result);
         }
 
         [Test]
@@ -279,8 +289,16 @@ namespace TDDToDo.Tests
         {
             var viewModel1 = CreateAndSelectOneList();
 
-            var viewModel2 = new TodoListViewModel();
-            Assert.AreEqual(viewModel1.TodoLists[0].Title, viewModel2.TodoLists[0].Title);
+            var viewModel2 = new FeaturesViewModel();
+            Assert.AreEqual(viewModel1.Features[0].Title, viewModel2.Features[0].Title);
+        }
+
+        [Test]
+        public void FeatureShouldHaveDetail()
+        {
+            var viewModel = CreateAndSelectOneList();
+
+            Assert.IsNotNull(viewModel.Features[0].Detail);
         }
 
         #region Private Methods
@@ -290,15 +308,17 @@ namespace TDDToDo.Tests
             Assert.AreEqual("SelectedListsItems", changedProperty);
         }
 
-        TodoListViewModel CreateAndSelectOneList()
+        FeaturesViewModel CreateAndSelectOneList()
         {
-            var viewModel = new TodoListViewModel();
+            var viewModel = new FeaturesViewModel();
             viewModel.AddItemCommand.CanExecuteChanged += MarkCanExecuteChanged;
             viewModel.PropertyChanged += MarkPropertyChanged;
+            viewModel.Title = "List 1";
+            viewModel.Detail = "In order the do something As a user I want to be able to do something";
 
-            viewModel.NewListCommand.Execute("List 1");
+            viewModel.NewListCommand.Execute();
 
-            viewModel.SelectedList = viewModel.TodoLists[0];
+            viewModel.SelectedList = viewModel.Features[0];
 
             return viewModel;
         }

@@ -18,7 +18,7 @@ namespace TDDToDo.Tests
         public void TodoItemShouldExposeCreatedAt()
         {
             var timestamp = DateTime.Now;
-            var item = new TodoItem("Title");
+            var item = new Specification("Title");
 
             Assert.AreEqual(timestamp, item.CreatedAt);
         }
@@ -27,7 +27,7 @@ namespace TDDToDo.Tests
         public void TodoItemShouldBeCreatedWithATimeStamp()
         {
             var timestamp = DateTime.Now;
-            var item = new TodoItem("Title");
+            var item = new Specification("Title");
 
             Assert.AreEqual(timestamp, item.Events[0].TimeStamp);
         }
@@ -35,39 +35,39 @@ namespace TDDToDo.Tests
         [Test]
         public void TodoEventShouldHaveAType()
         {
-            var item = new TodoItem("Title");
+            var item = new Specification("Title");
 
-            Assert.AreEqual(TodoEventType.Created, item.Events[0].EventType);
+            Assert.AreEqual(SpecificationEventType.Created, item.Events[0].EventType);
         }
 
         [Test]
         public void ShouldRecordInProgressEvent()
         {
-            var item = new TodoItem("Title");
+            var item = new Specification("Title");
             item.SetInProgress();
 
-            Assert.AreEqual(TodoEventType.SetInProgress, item.Events[1].EventType); 
+            Assert.AreEqual(SpecificationEventType.SetInProgress, item.Events[1].EventType); 
         }
 
         [Test]
         public void ShouldRecordCompletedEvent()
         {
-            var item = new TodoItem("Title");
+            var item = new Specification("Title");
             item.SetCompleted();
 
-            Assert.AreEqual(TodoEventType.Completed, item.Events[1].EventType);
+            Assert.AreEqual(SpecificationEventType.Completed, item.Events[1].EventType);
         }
 
         [Test]
         public void ShouldRecordAllEvents()
         {
-            var item = new TodoItem("Title");
+            var item = new Specification("Title");
             item.SetInProgress();
             item.SetCompleted();
 
-            Assert.AreEqual(TodoEventType.Created, item.Events[0].EventType);
-            Assert.AreEqual(TodoEventType.SetInProgress, item.Events[1].EventType);
-            Assert.AreEqual(TodoEventType.Completed, item.Events[2].EventType);
+            Assert.AreEqual(SpecificationEventType.Created, item.Events[0].EventType);
+            Assert.AreEqual(SpecificationEventType.SetInProgress, item.Events[1].EventType);
+            Assert.AreEqual(SpecificationEventType.Completed, item.Events[2].EventType);
         }
 
 

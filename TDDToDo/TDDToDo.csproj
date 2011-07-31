@@ -59,9 +59,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\TodoEvent.cs" />
-    <Compile Include="Models\TodoEventType.cs" />
-    <Compile Include="ViewModels\TodoListViewModel.cs" />
+    <Compile Include="Models\SpecificationEvent.cs" />
+    <Compile Include="Models\SpecificationEventType.cs" />
+    <Compile Include="ViewModels\FeaturesViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -76,8 +76,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\TodoItem.cs" />
-    <Compile Include="Models\TodoList.cs" />
+    <Compile Include="Models\Specification.cs" />
+    <Compile Include="Models\Feature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

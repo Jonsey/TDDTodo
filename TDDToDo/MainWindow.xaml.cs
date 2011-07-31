@@ -23,7 +23,7 @@ namespace TDDToDo
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new TodoListViewModel();
+            DataContext = new FeaturesViewModel();
         }
     }
 }

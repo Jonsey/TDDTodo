@@ -3,11 +3,11 @@
 namespace TDDToDo.Models
 {
     [Serializable]
-    public class TodoEvent
+    public class SpecificationEvent
     {
         #region Constructors
 
-        public TodoEvent(TodoEventType eventType)
+        public SpecificationEvent(SpecificationEventType eventType)
         {
             TimeStamp = DateTime.Now;
             EventType = eventType;
@@ -19,7 +19,7 @@ namespace TDDToDo.Models
 
         public DateTime TimeStamp { get; private set; }
 
-        public TodoEventType EventType { get; private set; } 
+        public SpecificationEventType EventType { get; private set; } 
 
         #endregion
     }

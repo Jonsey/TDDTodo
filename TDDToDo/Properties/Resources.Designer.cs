@@ -70,7 +70,7 @@ namespace TDDToDo.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TodoList.dat.
+        ///   Looks up a localized string similar to Feature.dat.
         /// </summary>
         internal static string DataFile {
             get {

@@ -8,14 +8,16 @@ using System.Xml.Serialization;
 namespace TDDToDo.Models
 {
     [Serializable]
-    public class TodoList
+    public class Feature
     {
         #region Constructors
 
-        public TodoList(string title)
+        public Feature(string title, string detail)
         {
             Title = title;
-            Items = new List<TodoItem>();
+            Detail = detail;
+
+            Specifications = new List<Specification>();
         } 
 
         #endregion
@@ -23,15 +25,17 @@ namespace TDDToDo.Models
         #region Properties
 
         public string Title { get; private set; }
-        public List<TodoItem> Items { get; private set; }
+        public string Detail { get; private set; }
+
+        public List<Specification> Specifications { get; private set; }
 
         #endregion
 
         #region Public Methods
 
-        public void AddItem(TodoItem todoItem)
+        public void AddItem(Specification specification)
         {
-            this.Items.Add(todoItem);
+            this.Specifications.Add(specification);
         } 
 
         #endregion       
