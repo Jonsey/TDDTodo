@@ -1,6 +1,6 @@
 ﻿namespace TDDToDo.Models
 {
-    public enum SpecificationEventType
+    public enum ScenarioEventType
     {
         Created,
         SetInProgress,

@@ -10,20 +10,20 @@ namespace TDDToDo.ViewModels
 {
     public class FeaturesViewModel : NotificationObject
     {
-        const string SelectedListsItemsPropertyName = "SelectedListsItems";
+        const string SelectedFeaturesScenariosPropertyName = "SelectedFeaturesScenarios";
 
         #region Fields
 
         readonly string dataFolder = System.Configuration.ConfigurationSettings.AppSettings["DataFolder"];
         readonly string pathToDataFile = System.Configuration.ConfigurationSettings.AppSettings["PathToDataFile"];
-        Feature selectedList;
+        Feature selectedFeature;
 
         #region Commands
 
-        DelegateCommand newListCommand;
-        DelegateCommand<string> addItemCommand;
-        DelegateCommand<Specification> setItemInProgressCommand;
-        DelegateCommand<Specification> setItemCompletedCommand;
+        DelegateCommand newFeatureCommand;
+        DelegateCommand<string> addScenarioCommand;
+        DelegateCommand<Scenario> setItemInProgressCommand;
+        DelegateCommand<Scenario> setItemCompletedCommand;
         DelegateCommand saveCommand;
         
         #endregion 
@@ -48,46 +48,46 @@ namespace TDDToDo.ViewModels
 
         public string Detail { get; set; }
 
-        public ObservableCollection<Specification> SelectedListsItems
+        public ObservableCollection<Scenario> SelectedFeaturesScenarios
         {
             get
             {
-                return selectedList != null ? new ObservableCollection<Specification>(selectedList.Specifications) : null;
+                return selectedFeature != null ? new ObservableCollection<Scenario>(selectedFeature.Scenarios) : null;
             }
         }
 
-        public Feature SelectedList
+        public Feature SelectedFeature
         {
-            get { return selectedList; }
+            get { return selectedFeature; }
             set
             {
-                selectedList = value;
+                selectedFeature = value;
 
-                AddItemCommand.RaiseCanExecuteChanged();
-                RefreshTodoItems();
+                AddScenarioCommand.RaiseCanExecuteChanged();
+                RefreshScenarios();
             }
         }
 
         #region Commands
 
-        public DelegateCommand NewListCommand
+        public DelegateCommand NewFeatureCommand
         {
-            get { return newListCommand ?? (newListCommand = new DelegateCommand(CreateNewList)); }
+            get { return newFeatureCommand ?? (newFeatureCommand = new DelegateCommand(CreateNewFeature)); }
         }
 
-        public DelegateCommand<string> AddItemCommand
+        public DelegateCommand<string> AddScenarioCommand
         {
-            get { return addItemCommand ?? (addItemCommand = new DelegateCommand<string>(AddItem, CanAddItem)); }
+            get { return addScenarioCommand ?? (addScenarioCommand = new DelegateCommand<string>(AddScenario, CanAddScenario)); }
         }
 
-        public DelegateCommand<Specification> SetItemInProgressCommand
+        public DelegateCommand<Scenario> SetItemInProgressCommand
         {
-            get { return setItemInProgressCommand ?? (setItemInProgressCommand = new DelegateCommand<Specification>(SetItemInProgress)); }
+            get { return setItemInProgressCommand ?? (setItemInProgressCommand = new DelegateCommand<Scenario>(SetItemInProgress)); }
         }
 
-        public DelegateCommand<Specification> SetItemCompletedCommand
+        public DelegateCommand<Scenario> SetItemCompletedCommand
         {
-            get { return setItemCompletedCommand ?? (setItemCompletedCommand = new DelegateCommand<Specification>(SetItemCompleted)); }
+            get { return setItemCompletedCommand ?? (setItemCompletedCommand = new DelegateCommand<Scenario>(SetItemCompleted)); }
         }
 
         public DelegateCommand SaveCommand
@@ -112,36 +112,36 @@ namespace TDDToDo.ViewModels
             }
         }
 
-        void CreateNewList()
+        void CreateNewFeature()
         {
             Features.Add(new Feature(Title, Detail));
             Save();
         }
 
-        bool CanAddItem(string title)
+        bool CanAddScenario(string title)
         {
-            return SelectedList != null;         
+            return SelectedFeature != null;         
         }
 
-        void AddItem(string title)
+        void AddScenario(string title)
         {
-            var item = new Specification(title);
-            SelectedList.AddItem(item);
+            var Scenario = new Scenario(title);
+            SelectedFeature.AddScenario(Scenario);
 
-            RefreshTodoItems();
+            RefreshScenarios();
             Save();
         }
 
-        void SetItemInProgress(Specification item)
+        void SetItemInProgress(Scenario Scenario)
         {
-            item.SetInProgress();
-            RefreshTodoItems();
+            Scenario.SetInProgress();
+            RefreshScenarios();
         }
 
-        void SetItemCompleted(Specification item)
+        void SetItemCompleted(Scenario Scenario)
         {
-            item.SetCompleted();
-            RefreshTodoItems();
+            Scenario.SetCompleted();
+            RefreshScenarios();
         }
 
         void Save()
@@ -155,9 +155,9 @@ namespace TDDToDo.ViewModels
             }
         }
 
-        void RefreshTodoItems()
+        void RefreshScenarios()
         {
-            RaisePropertyChanged(SelectedListsItemsPropertyName);
+            RaisePropertyChanged(SelectedFeaturesScenariosPropertyName);
         }
 
         #endregion

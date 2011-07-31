@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace TDDToDo.Models
 {
     [Serializable]
-    public class Specification
+    public class Scenario
     {
         #region Properties
 
@@ -13,16 +13,16 @@ namespace TDDToDo.Models
         public DateTime CreatedAt { get; private set; }
         public string Title { get; private set; }
 
-        public List<SpecificationEvent> Events { get; private set; }
+        public List<ScenarioEvent> Events { get; private set; }
 
         #endregion
 
         #region Constructors
 
-        public Specification(string title)
+        public Scenario(string title)
         {
-            Events = new List<SpecificationEvent>();
-            RecordEvent(SpecificationEventType.Created);
+            Events = new List<ScenarioEvent>();
+            RecordEvent(ScenarioEventType.Created);
 
             Title = title;
             CreatedAt = Events[0].TimeStamp; // TODO don't like it
@@ -37,7 +37,7 @@ namespace TDDToDo.Models
             InProgress = true;
             Completed = false;
 
-            RecordEvent(SpecificationEventType.SetInProgress);
+            RecordEvent(ScenarioEventType.SetInProgress);
         }
 
         public void SetCompleted()
@@ -45,16 +45,16 @@ namespace TDDToDo.Models
             Completed = true;
             InProgress = false;
 
-            RecordEvent(SpecificationEventType.Completed);
+            RecordEvent(ScenarioEventType.Completed);
         }
 
         #endregion
 
         #region Private Methods
 
-        void RecordEvent(SpecificationEventType eventType)
+        void RecordEvent(ScenarioEventType eventType)
         {
-            Events.Add(new SpecificationEvent(eventType));
+            Events.Add(new ScenarioEvent(eventType));
         }
 
         #endregion

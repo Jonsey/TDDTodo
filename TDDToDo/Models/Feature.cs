@@ -17,7 +17,7 @@ namespace TDDToDo.Models
             Title = title;
             Detail = detail;
 
-            Specifications = new List<Specification>();
+            Scenarios = new List<Scenario>();
         } 
 
         #endregion
@@ -27,15 +27,15 @@ namespace TDDToDo.Models
         public string Title { get; private set; }
         public string Detail { get; private set; }
 
-        public List<Specification> Specifications { get; private set; }
+        public List<Scenario> Scenarios { get; private set; }
 
         #endregion
 
         #region Public Methods
 
-        public void AddItem(Specification specification)
+        public void AddScenario(Scenario Scenario)
         {
-            this.Specifications.Add(specification);
+            this.Scenarios.Add(Scenario);
         } 
 
         #endregion       

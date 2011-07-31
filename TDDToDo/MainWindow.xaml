@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" FontSize="16">
     <Window.Resources>
-        <Style x:Key="TodoItemRowStyle" TargetType="{x:Type DataGridRow}">
+        <Style x:Key="ScenarioRowStyle" TargetType="{x:Type DataGridRow}">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Completed}" Value="true">
                     <Setter Property="Background" Value="Green"/>
@@ -53,7 +53,7 @@
                             </StackPanel>
 
 
-                            <Button Content="Add feature" Command="{Binding NewListCommand}" 
+                            <Button Content="Add feature" Command="{Binding NewFeatureCommand}" 
                             CommandParameter="{Binding ElementName=newFeature, Path=Text}" 
                             Padding="2" Margin="5" Width="100" HorizontalAlignment="Right"/>
                         </StackPanel>
@@ -65,7 +65,7 @@
             <GroupBox Header="Features" Margin="10" Padding="5">
                 <ListBox ItemsSource="{Binding Features}"
                       IsSynchronizedWithCurrentItem="True" 
-                      SelectedItem="{Binding SelectedList}">
+                      SelectedItem="{Binding SelectedFeature}">
                 </ListBox>
             </GroupBox>
 
@@ -76,20 +76,20 @@
             <HeaderedContentControl.Header>
                 <StackPanel Orientation="Vertical" Margin="10">
                     <TextBlock Text="Scenarios"/>
-                    <TextBlock Text="{Binding SelectedFeature.Title}"/>
-                    <TextBox x:Name="newTodoTitle"/>
-                    <Button Content="Add scenario" Command="{Binding AddItemCommand}"  
-                            CommandParameter="{Binding ElementName=newTodoTitle, Path=Text}"
+
+                    <TextBox x:Name="newScenarioTitle"/>
+                    <Button Content="Add scenario" Command="{Binding AddScenarioCommand}"  
+                            CommandParameter="{Binding ElementName=newScenarioTitle, Path=Text}"
                             Padding="2" Margin="5" Width="120" HorizontalAlignment="Right"/>
                 </StackPanel>
             </HeaderedContentControl.Header>
 
             <StackPanel>
                 <GroupBox Header="Current" Margin="10" Padding="5">
-                    <DataGrid ItemsSource="{Binding SelectedListsItems}" 
+                    <DataGrid ItemsSource="{Binding SelectedFeaturesScenarios}" 
                       AutoGenerateColumns="False"
                       GridLinesVisibility="None"
-                      RowStyle="{StaticResource TodoItemRowStyle}">
+                      RowStyle="{StaticResource ScenarioRowStyle}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="auto" Binding="{Binding Title}" Header="Title" />
                             <DataGridTextColumn Width="auto" Binding="{Binding CreatedAt}" Header="Created At" />

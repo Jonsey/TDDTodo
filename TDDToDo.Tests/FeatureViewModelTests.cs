@@ -26,7 +26,7 @@ namespace TDDToDo.Tests
     // Selecting list should update can do add item
     // Display list item in human readable form
     // TODO implement ToString?
-    // Expose SelectedListsItems as a property
+    // Expose SelectedFeaturesScenarios as a property
     // Add items to the lists
     // Adding items when no list is selected
     // Select list for editing/viewing
@@ -40,7 +40,7 @@ namespace TDDToDo.Tests
     public class FeatureViewModelTests
     {
 
-        const string ItemTitle = "Get this test to pass";
+        const string FeatureTitle = "Get this test to pass";
 
         bool canExecuteChanged;
         string changedProperty;
@@ -64,35 +64,35 @@ namespace TDDToDo.Tests
         #endregion
 
         [Test]
-        public void CanCreateMultipleLists()
+        public void CanCreateMultipleFeatures()
         {
             var viewModel = new FeaturesViewModel();
-            viewModel.Title = "List 1";
-            viewModel.NewListCommand.Execute();
-            viewModel.Title = "List 2";
-            viewModel.NewListCommand.Execute(); 
+            viewModel.Title = "Feature 1";
+            viewModel.NewFeatureCommand.Execute();
+            viewModel.Title = "Feature 2";
+            viewModel.NewFeatureCommand.Execute(); 
 
             Assert.AreEqual(2, viewModel.Features.Count);
         }
 
         [Test]
-        public void ShouldNotBeAbleToAddItemsIfNoListSelected()
+        public void ShouldNotBeAbleToAddItemsIfNoFeatureSelected()
         {
             var viewModel = new FeaturesViewModel();
-            viewModel.Title = "List 1";
-            viewModel.NewListCommand.Execute();
+            viewModel.Title = "Feature 1";
+            viewModel.NewFeatureCommand.Execute();
 
-            Assert.IsFalse(viewModel.AddItemCommand.CanExecute(ItemTitle));
+            Assert.IsFalse(viewModel.AddScenarioCommand.CanExecute(FeatureTitle));
         }
 
         [Test]
-        public void ShouldBeAbleToAddANewItemIfAListHasBeenSelected()
+        public void ShouldBeAbleToAddANewItemIfAFeatureHasBeenSelected()
         {
-            var viewModel = CreateAndSelectOneList();
+            var viewModel = CreateAndSelectOneFeature();
 
             try
             {
-                viewModel.AddItemCommand.Execute(ItemTitle);
+                viewModel.AddScenarioCommand.Execute(FeatureTitle);
             }
             catch(Exception ex)
             {
@@ -101,131 +101,131 @@ namespace TDDToDo.Tests
         }
 
         [Test]
-        public void ShouldAddNewItemsToTheSelectedList()
+        public void ShouldAddNewItemsToTheSelectedFeature()
         {
             var viewModel = new FeaturesViewModel();
-            viewModel.Title = "List 1";
-            viewModel.NewListCommand.Execute();
-            viewModel.Title = "List 2";
-            viewModel.NewListCommand.Execute(); 
+            viewModel.Title = "Feature 1";
+            viewModel.NewFeatureCommand.Execute();
+            viewModel.Title = "Feature 2";
+            viewModel.NewFeatureCommand.Execute(); 
 
-            viewModel.SelectedList = viewModel.Features[1];
+            viewModel.SelectedFeature = viewModel.Features[1];
 
-            Assert.IsTrue(viewModel.AddItemCommand.CanExecute(ItemTitle), "Cannot add item");
+            Assert.IsTrue(viewModel.AddScenarioCommand.CanExecute(FeatureTitle), "Cannot add scenario.");
 
-            viewModel.AddItemCommand.Execute(ItemTitle);
+            viewModel.AddScenarioCommand.Execute(FeatureTitle);
 
-            Assert.AreEqual(ItemTitle, viewModel.Features[1].Specifications[0].Title);
+            Assert.AreEqual(FeatureTitle, viewModel.Features[1].Scenarios[0].Title);
         }
 
         [Test]
-        public void ShouldExposeSelectedListsItems()
+        public void ShouldExposeSelectedFeaturesScenarios()
         {
             var viewModel = new FeaturesViewModel();
-            viewModel.Title = "List 1";
-            viewModel.NewListCommand.Execute();
-            viewModel.Title = "List 2";
-            viewModel.NewListCommand.Execute(); 
+            viewModel.Title = "Feature 1";
+            viewModel.NewFeatureCommand.Execute();
+            viewModel.Title = "Feature 2";
+            viewModel.NewFeatureCommand.Execute(); 
 
-            viewModel.SelectedList = viewModel.Features[1];
-            viewModel.AddItemCommand.Execute(ItemTitle);
+            viewModel.SelectedFeature = viewModel.Features[1];
+            viewModel.AddScenarioCommand.Execute(FeatureTitle);
 
-            Assert.AreEqual(ItemTitle, viewModel.SelectedListsItems[0].Title);
+            Assert.AreEqual(FeatureTitle, viewModel.SelectedFeaturesScenarios[0].Title);
         }
 
         [Test]
-        public void ItemsListShouldRelateToSelectedList()
+        public void ItemsFeatureShouldRelateToSelectedFeature()
         {
             var viewModel = new FeaturesViewModel();
-            viewModel.Title = "List 1";
-            viewModel.NewListCommand.Execute();
-            viewModel.Title = "List 2";
-            viewModel.NewListCommand.Execute(); 
+            viewModel.Title = "Feature 1";
+            viewModel.NewFeatureCommand.Execute();
+            viewModel.Title = "Feature 2";
+            viewModel.NewFeatureCommand.Execute(); 
 
-            viewModel.SelectedList = viewModel.Features[1];
-            viewModel.AddItemCommand.Execute("Item 1");
+            viewModel.SelectedFeature = viewModel.Features[1];
+            viewModel.AddScenarioCommand.Execute("Item 1");
 
-            viewModel.SelectedList = viewModel.Features[0];
-            viewModel.AddItemCommand.Execute("Item 0");
+            viewModel.SelectedFeature = viewModel.Features[0];
+            viewModel.AddScenarioCommand.Execute("Item 0");
 
-            viewModel.SelectedList = viewModel.Features[1];
+            viewModel.SelectedFeature = viewModel.Features[1];
 
-            Assert.AreEqual("Item 1", viewModel.SelectedList.Specifications[0].Title);
+            Assert.AreEqual("Item 1", viewModel.SelectedFeature.Scenarios[0].Title);
         }
 
         [Test] 
-        public void ShouldNotFailWhenNoListHasBeenSelected()
+        public void ShouldNotFailWhenNoFeatureHasBeenSelected()
         {
             var viewModel = new FeaturesViewModel();
 
-            Assert.IsNull(viewModel.SelectedListsItems);
+            Assert.IsNull(viewModel.SelectedFeaturesScenarios);
         }
 
         [Test]
-        public void ShouldAllowNewItemsToBeAddedWhenListHasBeenSelected()
+        public void ShouldAllowNewItemsToBeAddedWhenFeatureHasBeenSelected()
         {
-            CreateAndSelectOneList();
+            CreateAndSelectOneFeature();
             Assert.IsTrue(canExecuteChanged);
         }
 
         [Test]
-        public void ShouldRefreshItemsWhenAListIsSelected()
+        public void ShouldRefreshItemsWhenAFeatureIsSelected()
         {
-            CreateAndSelectOneList();
+            CreateAndSelectOneFeature();
 
-            AssertTodoItemsRefreshed();
+            AssertScenariosRefreshed();
         }
 
         [Test]
         public void ShouldRefreshItemsWhenAnItemIsAdded()
         {
-            var viewModel = CreateAndSelectOneList();
+            var viewModel = CreateAndSelectOneFeature();
             changedProperty = string.Empty;
 
-            viewModel.AddItemCommand.Execute(ItemTitle);
+            viewModel.AddScenarioCommand.Execute(FeatureTitle);
 
-            AssertTodoItemsRefreshed();
+            AssertScenariosRefreshed();
         }
 
         [Test]
         public void ShouldBeAbleToSetItemsInProgress()
         {
-            var viewModel = CreateAndSelectOneList();
-            viewModel.AddItemCommand.Execute(ItemTitle);
+            var viewModel = CreateAndSelectOneFeature();
+            viewModel.AddScenarioCommand.Execute(FeatureTitle);
 
             changedProperty = string.Empty;
-            viewModel.SetItemInProgressCommand.Execute(viewModel.Features[0].Specifications[0]);
+            viewModel.SetItemInProgressCommand.Execute(viewModel.Features[0].Scenarios[0]);
 
-            Assert.IsTrue(viewModel.Features[0].Specifications[0].InProgress);
-            AssertTodoItemsRefreshed();
+            Assert.IsTrue(viewModel.Features[0].Scenarios[0].InProgress);
+            AssertScenariosRefreshed();
         }
 
         [Test]
         public void ShouldBeAbleToSetItemsAsComplete()
         {
-            var viewModel = CreateAndSelectOneList();
-            viewModel.AddItemCommand.Execute(ItemTitle);
+            var viewModel = CreateAndSelectOneFeature();
+            viewModel.AddScenarioCommand.Execute(FeatureTitle);
 
             changedProperty = string.Empty;
             
-            viewModel.SetItemCompletedCommand.Execute(viewModel.Features[0].Specifications[0]);
+            viewModel.SetItemCompletedCommand.Execute(viewModel.Features[0].Scenarios[0]);
 
-            Assert.IsTrue(viewModel.Features[0].Specifications[0].Completed);
-            AssertTodoItemsRefreshed();
+            Assert.IsTrue(viewModel.Features[0].Scenarios[0].Completed);
+            AssertScenariosRefreshed();
         }
         
         [Test]
         public void CompletedItemShouldNotBeInProgress()
         {
-            var viewModel = CreateAndSelectOneList();
-            viewModel.AddItemCommand.Execute(ItemTitle);
+            var viewModel = CreateAndSelectOneFeature();
+            viewModel.AddScenarioCommand.Execute(FeatureTitle);
 
             changedProperty = string.Empty;
-            viewModel.SetItemInProgressCommand.Execute(viewModel.Features[0].Specifications[0]);
-            viewModel.SetItemCompletedCommand.Execute(viewModel.Features[0].Specifications[0]);
+            viewModel.SetItemInProgressCommand.Execute(viewModel.Features[0].Scenarios[0]);
+            viewModel.SetItemCompletedCommand.Execute(viewModel.Features[0].Scenarios[0]);
 
-            Assert.IsFalse(viewModel.Features[0].Specifications[0].InProgress);
-            AssertTodoItemsRefreshed(); 
+            Assert.IsFalse(viewModel.Features[0].Scenarios[0].InProgress);
+            AssertScenariosRefreshed(); 
         }
 
         [Test]
@@ -233,8 +233,8 @@ namespace TDDToDo.Tests
         {
             Directory.CreateDirectory(System.Configuration.ConfigurationSettings.AppSettings["DataFolder"]);
 
-            var viewModel = CreateAndSelectOneList();
-            viewModel.AddItemCommand.Execute(ItemTitle);
+            var viewModel = CreateAndSelectOneFeature();
+            viewModel.AddScenarioCommand.Execute(FeatureTitle);
 
             viewModel.SaveCommand.Execute();
             Assert.IsTrue(File.Exists(DataFileLocation));
@@ -245,8 +245,8 @@ namespace TDDToDo.Tests
         {
             Directory.CreateDirectory(System.Configuration.ConfigurationSettings.AppSettings["DataFolder"]);
 
-            var viewModel = CreateAndSelectOneList();
-            viewModel.AddItemCommand.Execute(ItemTitle);
+            var viewModel = CreateAndSelectOneFeature();
+            viewModel.AddScenarioCommand.Execute(FeatureTitle);
 
             viewModel.SaveCommand.Execute();
             Assert.IsTrue(File.Exists(DataFileLocation));
@@ -262,24 +262,24 @@ namespace TDDToDo.Tests
         }
 
         [Test]
-        public void ShouldSaveWhenNewListsAreCreated()
+        public void ShouldSaveWhenNewFeaturesAreCreated()
         {
             Directory.CreateDirectory(System.Configuration.ConfigurationSettings.AppSettings["DataFolder"]);
 
             File.Delete(DataFileLocation);
-            CreateAndSelectOneList();
+            CreateAndSelectOneFeature();
             
             Assert.IsTrue(File.Exists(DataFileLocation));
         }
 
         [Test]
-        public void ShouldSaveWhenNewItemIsAdded()
+        public void ShouldSaveWhenNewScenarioIsAdded()
         {
             Directory.CreateDirectory(System.Configuration.ConfigurationSettings.AppSettings["DataFolder"]);
 
-            var viewModel = CreateAndSelectOneList();
+            var viewModel = CreateAndSelectOneFeature();
             File.Delete(DataFileLocation);
-            viewModel.AddItemCommand.Execute(ItemTitle);
+            viewModel.AddScenarioCommand.Execute(FeatureTitle);
 
             Assert.IsTrue(File.Exists(DataFileLocation));
         }
@@ -287,7 +287,7 @@ namespace TDDToDo.Tests
         [Test]
         public void ShouldLoadSavedDataOnStartup()
         {
-            var viewModel1 = CreateAndSelectOneList();
+            var viewModel1 = CreateAndSelectOneFeature();
 
             var viewModel2 = new FeaturesViewModel();
             Assert.AreEqual(viewModel1.Features[0].Title, viewModel2.Features[0].Title);
@@ -296,29 +296,29 @@ namespace TDDToDo.Tests
         [Test]
         public void FeatureShouldHaveDetail()
         {
-            var viewModel = CreateAndSelectOneList();
+            var viewModel = CreateAndSelectOneFeature();
 
             Assert.IsNotNull(viewModel.Features[0].Detail);
         }
 
         #region Private Methods
 
-        void AssertTodoItemsRefreshed()
+        void AssertScenariosRefreshed()
         {
-            Assert.AreEqual("SelectedListsItems", changedProperty);
+            Assert.AreEqual("SelectedFeaturesScenarios", changedProperty);
         }
 
-        FeaturesViewModel CreateAndSelectOneList()
+        FeaturesViewModel CreateAndSelectOneFeature()
         {
             var viewModel = new FeaturesViewModel();
-            viewModel.AddItemCommand.CanExecuteChanged += MarkCanExecuteChanged;
+            viewModel.AddScenarioCommand.CanExecuteChanged += MarkCanExecuteChanged;
             viewModel.PropertyChanged += MarkPropertyChanged;
-            viewModel.Title = "List 1";
+            viewModel.Title = "Feature 1";
             viewModel.Detail = "In order the do something As a user I want to be able to do something";
 
-            viewModel.NewListCommand.Execute();
+            viewModel.NewFeatureCommand.Execute();
 
-            viewModel.SelectedList = viewModel.Features[0];
+            viewModel.SelectedFeature = viewModel.Features[0];
 
             return viewModel;
         }

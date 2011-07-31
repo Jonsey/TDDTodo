@@ -11,11 +11,11 @@ namespace TDDToDo.Tests
     // Feature API is not intuitive
     // Completed item set to inprogress should not be completed
     // Completed item should not be in progress
-    // Flag item as completed
-    // Flag item as in progress 
-    // Add an item to the list
-    // Give list a category
-    // List of items 
+    // Flag scenario as completed
+    // Flag scenario as in progress 
+    // Add an scenario to the feature
+    // Give feature a category
+    // List of features 
 
     [TestFixture]
     public class CreateFeatureTests
@@ -24,47 +24,47 @@ namespace TDDToDo.Tests
         const string Detail = "In order the do something As a user I want to be able to do something";
 
         Feature feature;
-        Specification specification;
+        Scenario scenario;
 
-        void InitialiseTodoList()
+        void InitialiseFeatureList()
         {
             feature = new Feature(Title, Detail);
         }
 
-        void AddTodoItem()
+        void AddScenario()
         {
-            specification = new Specification("Title");
-            feature.AddItem(specification);
+            scenario = new Scenario("Title");
+            feature.AddScenario(scenario);
         }
 
         [Test]
-        public void ShouldBeAbleToCreateANewTodoList()
+        public void ShouldBeAbleToCreateAFeature()
         {
-            InitialiseTodoList();
+            InitialiseFeatureList();
             Assert.IsNotNull(feature);
         }
 
         [Test]
-        public void ShouldBeAbleToAddANewItem()
+        public void ShouldBeAbleToAddANewScenario()
         {
-            InitialiseTodoList();
-            AddTodoItem();
+            InitialiseFeatureList();
+            AddScenario();
 
-            Assert.AreEqual(specification, feature.Specifications[0]);
+            Assert.AreEqual(scenario, feature.Scenarios[0]);
         }
 
         [Test]
-        public void ListShouldHaveATitle()
+        public void FeatureShouldHaveATitle()
         {
-            InitialiseTodoList();
+            InitialiseFeatureList();
 
             Assert.AreEqual(Title, feature.Title);
         }
 
         [Test]
-        public void ListShouldHaveDetail()
+        public void FeatureShouldHaveDetail()
         {
-            InitialiseTodoList();
+            InitialiseFeatureList();
 
             Assert.AreEqual(Detail, feature.Detail);
         }
@@ -72,47 +72,47 @@ namespace TDDToDo.Tests
         [Test]
         public void ShouldMarkAsInProgress()
         {
-            InitialiseTodoList();
-            AddTodoItem();
+            InitialiseFeatureList();
+            AddScenario();
 
-            feature.Specifications[0].SetInProgress();
+            feature.Scenarios[0].SetInProgress();
 
-            Assert.IsTrue(feature.Specifications[0].InProgress);
+            Assert.IsTrue(feature.Scenarios[0].InProgress);
         }
 
         [Test]
         public void ShouldMarkAsCompleted()
         {
-            InitialiseTodoList();
-            AddTodoItem();
+            InitialiseFeatureList();
+            AddScenario();
 
-            feature.Specifications[0].SetCompleted();
+            feature.Scenarios[0].SetCompleted();
 
-            Assert.IsTrue(feature.Specifications[0].Completed);
+            Assert.IsTrue(feature.Scenarios[0].Completed);
         }
 
         [Test]
         public void InProgressItemShouldNotBeInprogressAfterCompletion()
         {
-            InitialiseTodoList();
-            AddTodoItem();
+            InitialiseFeatureList();
+            AddScenario();
 
-            feature.Specifications[0].SetInProgress();
-            feature.Specifications[0].SetCompleted();
+            feature.Scenarios[0].SetInProgress();
+            feature.Scenarios[0].SetCompleted();
 
-            Assert.IsFalse(feature.Specifications[0].InProgress);
+            Assert.IsFalse(feature.Scenarios[0].InProgress);
         }
 
         [Test]
-        public void CompletedItemSetToInprogressShouldNotBeCompleted()
+        public void CompletedScenarioSetToInprogressShouldNotBeCompleted()
         {
-            InitialiseTodoList();
-            AddTodoItem();
+            InitialiseFeatureList();
+            AddScenario();
 
-            feature.Specifications[0].SetCompleted();
-            feature.Specifications[0].SetInProgress();
+            feature.Scenarios[0].SetCompleted();
+            feature.Scenarios[0].SetInProgress();
 
-            Assert.IsFalse(feature.Specifications[0].Completed);
+            Assert.IsFalse(feature.Scenarios[0].Completed);
         }
     }
 }
