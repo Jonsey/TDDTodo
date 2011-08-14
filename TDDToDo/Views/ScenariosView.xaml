@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="TDDToDo.Views.ScenariosView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="350" d:DesignWidth="600" FontSize="16">
+    <UserControl.Resources>
+        <Style x:Key="ScenarioRowStyle" TargetType="{x:Type DataGridRow}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Completed}" Value="true">
+                    <Setter Property="Background" Value="Green"/>
+                    <Setter Property="Opacity"  Value="0.7"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding InProgress}" Value="true">
+                    <Setter Property="Background" Value="Orange"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <HeaderedContentControl MinWidth="400">
+        <HeaderedContentControl.Header>
+            <StackPanel Orientation="Vertical" Margin="10">
+                <TextBlock Text="Scenarios"/>
+
+                <TextBox x:Name="newScenarioTitle"/>
+                <Button Content="Add scenario" Command="{Binding AddScenarioCommand}"  
+                            CommandParameter="{Binding ElementName=newScenarioTitle, Path=Text}"
+                            Padding="2" Margin="5" Width="120" HorizontalAlignment="Right"/>
+            </StackPanel>
+        </HeaderedContentControl.Header>
+
+        <StackPanel>
+            <GroupBox Header="Current" Margin="10" Padding="5">
+                <DataGrid ItemsSource="{Binding SelectedFeaturesScenarios}" 
+                      AutoGenerateColumns="False"
+                      GridLinesVisibility="None"
+                      RowStyle="{StaticResource ScenarioRowStyle}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="auto" Binding="{Binding Title}" Header="Title" />
+                        <DataGridTextColumn Width="auto" Binding="{Binding CreatedAt}" Header="Created At" />
+                        <DataGridTemplateColumn Header="In Progress">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="In Progress" 
+                                        Command="{Binding DataContext.SetItemInProgressCommand, 
+                                    RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                        CommandParameter="{Binding}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="In Progress">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Completed" 
+                                        Command="{Binding DataContext.SetItemCompletedCommand, 
+                                    RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                                        CommandParameter="{Binding}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+
+            <GroupBox Header="Completed" Margin="10" Padding="5">
+                <DataGrid ItemsSource="{Binding SelectedListsCompletedItems}" 
+                      AutoGenerateColumns="False"
+                      GridLinesVisibility="None"
+                      RowStyle="{StaticResource ScenarioRowStyle}">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="auto" Binding="{Binding Title}" Header="Title" />
+                        <DataGridTextColumn Width="auto" Binding="{Binding CreatedAt}" Header="Created At" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+        </StackPanel>
+
+    </HeaderedContentControl>
+</UserControl>

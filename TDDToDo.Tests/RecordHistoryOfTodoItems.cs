@@ -37,7 +37,7 @@ namespace TDDToDo.Tests
         {
             var item = new Scenario("Title");
 
-            Assert.AreEqual(ScenarioEventType.Created, item.Events[0].EventType);
+            Assert.AreEqual(ScenarioStatus.Created, item.Events[0].Status);
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace TDDToDo.Tests
             var item = new Scenario("Title");
             item.SetInProgress();
 
-            Assert.AreEqual(ScenarioEventType.SetInProgress, item.Events[1].EventType); 
+            Assert.AreEqual(ScenarioStatus.InProgress, item.Events[1].Status); 
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace TDDToDo.Tests
             var item = new Scenario("Title");
             item.SetCompleted();
 
-            Assert.AreEqual(ScenarioEventType.Completed, item.Events[1].EventType);
+            Assert.AreEqual(ScenarioStatus.Completed, item.Events[1].Status);
         }
 
         [Test]
@@ -65,9 +65,9 @@ namespace TDDToDo.Tests
             item.SetInProgress();
             item.SetCompleted();
 
-            Assert.AreEqual(ScenarioEventType.Created, item.Events[0].EventType);
-            Assert.AreEqual(ScenarioEventType.SetInProgress, item.Events[1].EventType);
-            Assert.AreEqual(ScenarioEventType.Completed, item.Events[2].EventType);
+            Assert.AreEqual(ScenarioStatus.Created, item.Events[0].Status);
+            Assert.AreEqual(ScenarioStatus.InProgress, item.Events[1].Status);
+            Assert.AreEqual(ScenarioStatus.Completed, item.Events[2].Status);
         }
 
 

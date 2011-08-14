@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TDDToDo.App" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TDDToDo.MainWindow" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TDDToDo.Models.Feature">
+    <Position X="4.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAgAAAgAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Models\Feature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TDDToDo.Models.Scenario">
+    <Position X="6" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAABAEIAACAAAAAAAgAAAAAAAAAAIBAAAAA=</HashCode>
+      <FileName>Models\Scenario.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TDDToDo.Models.ScenarioEvent">
+    <Position X="7.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ScenarioEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TDDToDo.Properties.Resources" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIADEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TDDToDo.Properties.Settings" Collapsed="true">
+    <Position X="0.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TDDToDo.ViewModels.FeaturesViewModel">
+    <Position X="2.25" Y="1.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>BAQEEIAAAACSCEAQCAABAAAAgAACgCAGAAQABIQECBA=</HashCode>
+      <FileName>ViewModels\FeaturesViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="TDDToDo.Models.ScenarioEventType">
+    <Position X="9.5" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAIAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ScenarioEventType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

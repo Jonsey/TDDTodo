@@ -46,7 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddScenarioDetailsTest.cs" />
+    <Compile Include="AppDataFileTests.cs" />
     <Compile Include="CreateFeatureTests.cs" />
+    <Compile Include="FeatureViewModelTestsBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecordHistoryOfTodoItems.cs" />
     <Compile Include="SaveFeatureTests.cs" />

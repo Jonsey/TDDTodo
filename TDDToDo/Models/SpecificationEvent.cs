@@ -7,10 +7,10 @@ namespace TDDToDo.Models
     {
         #region Constructors
 
-        public ScenarioEvent(ScenarioEventType eventType)
+        public ScenarioEvent(ScenarioStatus status)
         {
             TimeStamp = DateTime.Now;
-            EventType = eventType;
+            Status = status;
         } 
 
         #endregion
@@ -19,7 +19,7 @@ namespace TDDToDo.Models
 
         public DateTime TimeStamp { get; private set; }
 
-        public ScenarioEventType EventType { get; private set; } 
+        public ScenarioStatus Status { get; private set; } 
 
         #endregion
     }

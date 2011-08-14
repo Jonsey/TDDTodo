@@ -37,30 +37,10 @@ namespace TDDToDo.Tests
     // Add new list
 
     [TestFixture]
-    public class FeatureViewModelTests
+    public class FeatureViewModelTests : FeatureViewModelTestsBase
     {
-
-        const string FeatureTitle = "Get this test to pass";
-
-        bool canExecuteChanged;
-        string changedProperty;
-        string DataFolder = System.Configuration.ConfigurationSettings.AppSettings["DataFolder"];
-        string DataFileLocation = System.Configuration.ConfigurationSettings.AppSettings["PathToDataFile"];
-
         #region Setup Teardown
-        [SetUp]
-        public void BeforeEach()
-        {
-            if (Directory.Exists(DataFolder))
-                Directory.Delete(DataFolder, true);
-        }
 
-        [TearDown]
-        public void AfterEach()
-        {
-            if (Directory.Exists(DataFolder))
-                Directory.Delete(DataFolder, true);
-        } 
         #endregion
 
         [Test]
@@ -229,71 +209,6 @@ namespace TDDToDo.Tests
         }
 
         [Test]
-        public void ShouldSerialiseToBinary()
-        {
-            Directory.CreateDirectory(System.Configuration.ConfigurationSettings.AppSettings["DataFolder"]);
-
-            var viewModel = CreateAndSelectOneFeature();
-            viewModel.AddScenarioCommand.Execute(FeatureTitle);
-
-            viewModel.SaveCommand.Execute();
-            Assert.IsTrue(File.Exists(DataFileLocation));
-        }
-
-        [Test]
-        public void ShouldDeserialiseBinaryData()
-        {
-            Directory.CreateDirectory(System.Configuration.ConfigurationSettings.AppSettings["DataFolder"]);
-
-            var viewModel = CreateAndSelectOneFeature();
-            viewModel.AddScenarioCommand.Execute(FeatureTitle);
-
-            viewModel.SaveCommand.Execute();
-            Assert.IsTrue(File.Exists(DataFileLocation));
-
-            object result;
-            using (var fs = new FileStream(DataFileLocation, FileMode.Open))
-            {
-                var formater = new BinaryFormatter();
-                result = formater.Deserialize(fs);
-            }
-
-            Assert.IsInstanceOf(typeof(ObservableCollection<Feature>),  result);
-        }
-
-        [Test]
-        public void ShouldSaveWhenNewFeaturesAreCreated()
-        {
-            Directory.CreateDirectory(System.Configuration.ConfigurationSettings.AppSettings["DataFolder"]);
-
-            File.Delete(DataFileLocation);
-            CreateAndSelectOneFeature();
-            
-            Assert.IsTrue(File.Exists(DataFileLocation));
-        }
-
-        [Test]
-        public void ShouldSaveWhenNewScenarioIsAdded()
-        {
-            Directory.CreateDirectory(System.Configuration.ConfigurationSettings.AppSettings["DataFolder"]);
-
-            var viewModel = CreateAndSelectOneFeature();
-            File.Delete(DataFileLocation);
-            viewModel.AddScenarioCommand.Execute(FeatureTitle);
-
-            Assert.IsTrue(File.Exists(DataFileLocation));
-        }
-
-        [Test]
-        public void ShouldLoadSavedDataOnStartup()
-        {
-            var viewModel1 = CreateAndSelectOneFeature();
-
-            var viewModel2 = new FeaturesViewModel();
-            Assert.AreEqual(viewModel1.Features[0].Title, viewModel2.Features[0].Title);
-        }
-
-        [Test]
         public void FeatureShouldHaveDetail()
         {
             var viewModel = CreateAndSelectOneFeature();
@@ -307,31 +222,6 @@ namespace TDDToDo.Tests
         {
             Assert.AreEqual("SelectedFeaturesScenarios", changedProperty);
         }
-
-        FeaturesViewModel CreateAndSelectOneFeature()
-        {
-            var viewModel = new FeaturesViewModel();
-            viewModel.AddScenarioCommand.CanExecuteChanged += MarkCanExecuteChanged;
-            viewModel.PropertyChanged += MarkPropertyChanged;
-            viewModel.Title = "Feature 1";
-            viewModel.Detail = "In order the do something As a user I want to be able to do something";
-
-            viewModel.NewFeatureCommand.Execute();
-
-            viewModel.SelectedFeature = viewModel.Features[0];
-
-            return viewModel;
-        }
-
-        void MarkPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            changedProperty = e.PropertyName;
-        }
-
-        void MarkCanExecuteChanged(object sender, EventArgs e)
-        {
-            canExecuteChanged = true;
-        } 
 
         #endregion
     }

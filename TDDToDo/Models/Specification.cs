@@ -9,11 +9,16 @@ namespace TDDToDo.Models
         #region Properties
 
         public bool InProgress { get; set; }
+
         public bool Completed { get; set; }
+
         public DateTime CreatedAt { get; private set; }
+
         public string Title { get; private set; }
 
         public List<ScenarioEvent> Events { get; private set; }
+
+        public List<Step> Steps { get; private set; }
 
         #endregion
 
@@ -22,7 +27,9 @@ namespace TDDToDo.Models
         public Scenario(string title)
         {
             Events = new List<ScenarioEvent>();
-            RecordEvent(ScenarioEventType.Created);
+            Steps = new List<Step>();
+
+            SetStatus(ScenarioStatus.Created);
 
             Title = title;
             CreatedAt = Events[0].TimeStamp; // TODO don't like it
@@ -37,7 +44,7 @@ namespace TDDToDo.Models
             InProgress = true;
             Completed = false;
 
-            RecordEvent(ScenarioEventType.SetInProgress);
+            SetStatus(ScenarioStatus.InProgress);
         }
 
         public void SetCompleted()
@@ -45,18 +52,25 @@ namespace TDDToDo.Models
             Completed = true;
             InProgress = false;
 
-            RecordEvent(ScenarioEventType.Completed);
+            SetStatus(ScenarioStatus.Completed);
+        }
+
+        public void AddStep(string step)
+        {
+            Steps.Add(new Step(step));
         }
 
         #endregion
 
         #region Private Methods
 
-        void RecordEvent(ScenarioEventType eventType)
+        void SetStatus(ScenarioStatus status)
         {
-            Events.Add(new ScenarioEvent(eventType));
+            Events.Add(new ScenarioEvent(status));
         }
 
         #endregion
+
+        
     }
 }
